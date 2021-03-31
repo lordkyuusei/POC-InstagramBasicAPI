@@ -15,7 +15,10 @@ const routes = [
         path: "/oauth",
         name: "oauth",
         component: Oauth,
-        props: route => ({ token: route.query.access_token })
+        props: route => ({
+            token: route.query.access_token,
+            code: route.query.code,
+        })
     }
 ];
 

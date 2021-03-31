@@ -2,15 +2,14 @@
   <div class="hello">
     <button @click="openInstagram">Connect To Instagram</button>
     <h1>Medias</h1>
-    Use {{ token }}
-    <input type="text" v-model="token" />
-    <button @click="openMedias">GetMedias</button>
-    <div v-if="username !== null && username !== ''">
+    <button v-if="accessToken" @click="openMedias">Load Medias</button>
+    <div v-if="accessToken">
       <h3>{{ username }}'s pictures</h3>
       <a v-for="image in medias" :key="image.id" :href="image.permalink">
         <img :src="image.media_Url" height="400px" width="400px">
       </a>
     </div>
+    <div v-else>Loading...</div>
   </div>
 </template>
 
@@ -23,11 +22,13 @@ export default {
   name: 'HelloWorld',
   props: {
     username: String,
-    token: String,
+    accessToken: String,
     medias: {}
   },
   created() {
-    this.username = '';
+  },
+  mounted() {
+      this.openMedias();
   },
   methods: {
     openInstagram() {
@@ -36,7 +37,8 @@ export default {
       })
     },
     openMedias() {
-      axios.get(`${baseAdress}/Medias?accessToken=${this.token}`).then(response => {
+      console.log(this.accessToken)
+      axios.get(`${baseAdress}/Medias?accessToken=${this.accessToken}`).then(response => {
         this.medias = response.data;
         this.username = this.medias[0].username;
       })
