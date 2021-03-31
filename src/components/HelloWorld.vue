@@ -1,8 +1,7 @@
 <template>
   <div class="hello">
-    <button @click="openInstagram">Connect To Instagram</button>
+    <button v-if="!accessToken" @click="openInstagram">Connect To Instagram</button>
     <h1>Medias</h1>
-    <button v-if="accessToken" @click="openMedias">Load Medias</button>
     <div v-if="accessToken">
       <h3>{{ username }}'s pictures</h3>
       <a v-for="image in medias" :key="image.id" :href="image.permalink">
@@ -27,17 +26,20 @@ export default {
   },
   created() {
   },
-  mounted() {
-      this.openMedias();
+  watch: {
+    accessToken: function (_, value) {
+      if (value !== undefined) {
+        this.openMedias()          
+      }
+    }
   },
   methods: {
     openInstagram() {
       axios.get(`${baseAdress}/OAuth/GetAuthorizationLink`).then(response => {
-        window.open(response.data.uri);
+        window.open(response.data.uri, "_self");
       })
     },
     openMedias() {
-      console.log(this.accessToken)
       axios.get(`${baseAdress}/Medias?accessToken=${this.accessToken}`).then(response => {
         this.medias = response.data;
         this.username = this.medias[0].username;

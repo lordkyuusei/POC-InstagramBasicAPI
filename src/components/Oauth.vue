@@ -19,7 +19,9 @@ export default {
   created() {
   },
   mounted() {
-      this.tradeCodeToToken(this.code);
+      if (this.code) {
+          this.tradeCodeToToken(this.code);
+      }
   },
   methods: {
       tradeCodeToToken(code) {
