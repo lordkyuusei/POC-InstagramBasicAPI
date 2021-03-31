@@ -2,6 +2,7 @@
   <div class="hello">
     <button @click="openInstagram">Connect To Instagram</button>
     <h1>Medias</h1>
+    Use {{ token }}
     <input type="text" v-model="token" />
     <button @click="openMedias">GetMedias</button>
     <div v-if="username !== null && username !== ''">
