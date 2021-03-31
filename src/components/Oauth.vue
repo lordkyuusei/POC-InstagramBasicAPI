@@ -28,7 +28,7 @@ export default {
             this.userId = userId;
             this.accessToken = accessToken;
             axios.get(`${baseAdress}/OAuth/GetAccessToken?short_lived_access_token=${this.accessToken}`).then(response => {
-                const { expires, accessToken } = response.data;
+                const { accessToken } = response.data;
                 this.accessToken = accessToken;
             })
         });
